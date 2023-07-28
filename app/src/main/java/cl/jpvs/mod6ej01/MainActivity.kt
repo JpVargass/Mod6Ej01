@@ -2,21 +2,20 @@ package cl.jpvs.mod6ej01
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+
 /*
- [] Navigation
- [] Fragmento agregar
-[] Fragmento Listado
- [] Crear Interfaz
+ [x] Navigation
+ [x] Fragmento agregar
+ [x] Crear Interfaz
+ [ ] Room
+      [x] _Entity
+      [x] _Dao
+      [X] _Base Datos
 
- [] Room
-   [] _Dao
-   [] _Base Datos
-   [] _Entity
+ [ ] Fragmento listado
+ [ ] RecyclerView
 
- [] Fragmento Listado
-[] RecyclerView
-
-*/
+ */
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
