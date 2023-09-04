@@ -21,7 +21,7 @@ private const val ARG_PARAM2 = "param2"
  */
 class AgregarFragment : Fragment() {
 
-    lateinit var binding: AgregarFragmentBinding
+    lateinit var binding: FragmentAgregarBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -62,3 +62,4 @@ class AgregarFragment : Fragment() {
 
     }
 }
+

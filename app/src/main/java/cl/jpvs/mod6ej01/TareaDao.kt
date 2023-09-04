@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.Query
 
 @Dao
-interface TareaDAO   {
+interface TareaDao  {
 
 
     @Insert
