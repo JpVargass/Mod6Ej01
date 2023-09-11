@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import cl.jpvs.mod6ej01.databinding.FragmentAgregarBinding
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -22,6 +23,7 @@ private const val ARG_PARAM2 = "param2"
 class AgregarFragment : Fragment() {
 
     lateinit var binding: FragmentAgregarBinding
+    private val tareaVM : TareaVM by activityViewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -32,6 +34,7 @@ class AgregarFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentAgregarBinding.inflate(layoutInflater, container, false)
+
         initListener()
         obtenerListaTareas()
         return binding.root
@@ -45,21 +48,23 @@ class AgregarFragment : Fragment() {
     }
 
     private fun guardarTarea(texto: String) {
-        val dao = TareaBaseDatos.getDatabase(requireContext()).getTaskDao()
+
         val tarea = Tarea(texto)
-        GlobalScope.launch { dao.insertarTarea(tarea) }
+    tareaVM.insertarTareas(tarea)
 
     }
 
     private fun obtenerListaTareas() {
-        val dao = TareaBaseDatos.getDatabase(requireContext()).getTaskDao()
-        GlobalScope.launch {
-            val tareas = dao.obtenerTareas()
-            val tasksAsText = tareas.joinToString("\n") { it.nombre }
-            binding.tvLista.text = tasksAsText
+
+       // GlobalScope.launch {
+                tareaVM.obtenerTareas().observe(viewLifecycleOwner){
+                val tasksAsText = it.joinToString("\n") { it.nombre }
+                binding.tvLista.text = tasksAsText  //envia datos a pantalla
+            }  // recuperacion de la tarea desde ddbb
+
         }
 
 
     }
-}
+
 
