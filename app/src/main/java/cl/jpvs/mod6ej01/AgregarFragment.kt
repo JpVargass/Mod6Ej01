@@ -22,6 +22,7 @@ private const val ARG_PARAM2 = "param2"
 class AgregarFragment : Fragment() {
 
     lateinit var binding: FragmentAgregarBinding
+    lateinit var repositorio : Repositorio
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -32,11 +33,17 @@ class AgregarFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentAgregarBinding.inflate(layoutInflater, container, false)
+        initRepositorio()
         initListener()
         obtenerListaTareas()
         return binding.root
     }
+private fun initRepositorio() {
+    repositorio = Repositorio(TareaBaseDatos.getDatabase(requireContext()).getTaskDao())
 
+
+
+}
     private fun initListener() {
         binding.btnAgregarTarea.setOnClickListener {
             val texto = binding.editTextTarea.text.toString()
@@ -45,21 +52,23 @@ class AgregarFragment : Fragment() {
     }
 
     private fun guardarTarea(texto: String) {
-        val dao = TareaBaseDatos.getDatabase(requireContext()).getTaskDao()
+
         val tarea = Tarea(texto)
-        GlobalScope.launch { dao.insertarTarea(tarea) }
+        GlobalScope.launch { repositorio.insertTask(tarea) }
 
     }
 
     private fun obtenerListaTareas() {
-        val dao = TareaBaseDatos.getDatabase(requireContext()).getTaskDao()
-        GlobalScope.launch {
-            val tareas = dao.obtenerTareas()
-            val tasksAsText = tareas.joinToString("\n") { it.nombre }
-            binding.tvLista.text = tasksAsText
+
+       // GlobalScope.launch {
+                repositorio.getTareas().observe(requireActivity()){
+                val tasksAsText = it.joinToString("\n") { it.nombre }
+                binding.tvLista.text = tasksAsText  //envia datos a pantalla
+            }  // recuperacion de la tarea desde ddbb
+
         }
 
 
     }
-}
+
 
